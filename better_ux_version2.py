@@ -72,17 +72,17 @@ def add_custom_css():
             color: #000000;
         }
         .stMarkdown h1 {
-            color: #000000;
+            color: #ffffff;
             font-size: 3em;
         }
         .stMarkdown h2 {
-            color: #000000;
+            color: #ffffff;
         }
         .stMarkdown p {
-            color: #000000;
+            color: #ffffff;
         }
         .uploaded-file-name {
-            color: #000000;
+            color: #ffffff;
             font-weight: bold;
         }
         .stRadio > label, .stRadio > div > label {
