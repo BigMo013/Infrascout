@@ -16,6 +16,7 @@ except Exception as e:
 
 
 # Custom CSS for styling Streamlit dashboard
+# Custom CSS for styling Streamlit dashboard
 def add_custom_css():
     custom_css = """
     <style>
@@ -85,7 +86,7 @@ def add_custom_css():
             font-weight: bold;
         }
         .stRadio > label, .stRadio > div > label {
-            color: #000000;
+            color: #ffffff; /* Changed to white */
         }
         .stSlider > label {
             color: #ffffff; /* Changed to white */
@@ -97,6 +98,9 @@ def add_custom_css():
             font-weight: bold;
             font-size: 1.2em;
             color: #ffffff; /* Changed to white */
+        }
+        .stTextArea > label {
+            color: #ffffff; /* Changed text area label to white */
         }
         .loading-spinner {
             display: none;
