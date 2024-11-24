@@ -22,7 +22,7 @@ def add_custom_css():
             background-image: url('https://example.com/background.jpg');
             background-size: cover;
             background-attachment: fixed;
-            color: #000000;
+            color: #001f3f;
         }
         .main-content {
             padding: 2rem;
