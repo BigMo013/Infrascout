@@ -10,9 +10,9 @@ import streamlit.components.v1 as components
 # Set the path to wkhtmltopdf
 try:
     pdfkit_config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
-    st.success("Application Configured Successfully!")
+    st.success("Anwendung erfolgreich konfiguriert!")
 except Exception as e:
-    st.error(f"Error configuring pdfkit: {e}")
+    st.error(f"Fehler bei der Konfiguration von pdfkit: {e}")
 
 # Custom CSS for styling Streamlit dashboard
 def add_custom_css():
@@ -55,12 +55,12 @@ def add_custom_css():
             border: 1px solid #cccccc;
             padding: 10px;
             font-weight: bold;
-            background-color: rgba5, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.95);
             color: #000000;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .stSidebar {
-            background-color:  #000000;
+            background-color: #000000;
             border-right: 2px solid #e0e0e0;
             padding: 20px;
         }
@@ -140,16 +140,16 @@ def add_custom_js():
             progressSteps.innerHTML = `
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">1. Set Parameters</span>
+                        <span style="font-size: 1.2em;">1. Parameter festlegen</span>
                     </div>
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">2. Upload Data</span>
+                        <span style="font-size: 1.2em;">2. Daten hochladen</span>
                     </div>
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">3. View Analysis</span>
+                        <span style="font-size: 1.2em;">3. Analyse anzeigen</span>
                     </div>
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">4. Generate Report</span>
+                        <span style="font-size: 1.2em;">4. Bericht generieren</span>
                     </div>
                 </div>
             `;
@@ -165,7 +165,7 @@ def generate_report(data, feedback):
         html_content = f"""
         <html>
         <head>
-            <title>Infrastructure Report</title>
+            <title>Infrastrukturbericht</title>
             <style>
                 body {{
                     font-family: 'Arial', sans-serif;
@@ -202,7 +202,7 @@ def generate_report(data, feedback):
             </style>
         </head>
         <body>
-            <h1>Infrastructure Report</h1>
+            <h1>Infrastrukturbericht</h1>
             {data.to_html(classes='table table-striped', border=0)}
             <div class='feedback-section'>
                 <h2>Feedback</h2>
@@ -213,16 +213,16 @@ def generate_report(data, feedback):
         """
         output_pdf_path = 'C:/Users/moham/Desktop/Infrascout/report.pdf'
         pdfkit.from_string(html_content, output_pdf_path, configuration=pdfkit_config, options={"enable-local-file-access": ""})
-        st.success(f"PDF report generated successfully at {output_pdf_path}!")
+        st.success(f"PDF-Bericht erfolgreich generiert unter {output_pdf_path}!")
     except Exception as e:
-        st.error(f"Error generating PDF: {e}. Please ensure that local file URLs are enabled for wkhtmltopdf.")
+        st.error(f"Fehler beim Generieren des PDF: {e}. Bitte stellen Sie sicher, dass lokale Dateizugriffe für wkhtmltopdf aktiviert sind.")
 
 # Analysis function for infrastructure
 def analyze_infrastructure_with_apis(
     place_name, density_threshold, proximity_threshold, tags, population_df, busyness_df, air_quality_df, infrastructure_gdf
 ):
     if population_df.empty:
-        st.error("Population DataFrame is empty.")
+        st.error("Die Population DataFrame ist leer.")
         return None
 
     # Convert to GeoDataFrame
@@ -233,14 +233,14 @@ def analyze_infrastructure_with_apis(
             crs="EPSG:4326"
         )
     except Exception as e:
-        st.error(f"Error converting to GeoDataFrame: {e}")
+        st.error(f"Fehler beim Konvertieren in GeoDataFrame: {e}")
         return None
 
     # Reproject population data
     try:
         population_gdf = population_gdf.to_crs(epsg=32632)
     except Exception as e:
-        st.error(f"Error reprojecting population data: {e}")
+        st.error(f"Fehler bei der Neukalibrierung der Populationsdaten: {e}")
         return None
 
     utm_proj = Proj(proj="utm", zone=32, ellps="WGS84")
@@ -278,27 +278,25 @@ def analyze_infrastructure_with_apis(
                         seen_coordinates.add((longitude, latitude))
 
                         suggested_locations.append({
-                            'Infrastructure Type': infra_type.capitalize(),
-                            'Suggested Latitude': latitude,
-                            'Suggested Longitude': longitude,
-                            'Area': area['Area'],
-                            'Population Density': area['Population Density']
+                            'Infrastrukturtyp': infra_type.capitalize(),
+                            'Vorgeschlagene Breite': latitude,
+                            'Vorgeschlagene Länge': longitude,
+                            'Bereich': area['Area'],
+                            'Bevölkerungsdichte': area['Population Density']
                         })
                 except Exception as e:
-                    st.error(f"Error processing {infra_type}: {e}")
+                    st.error(f"Fehler bei der Verarbeitung von {infra_type}: {e}")
 
     if suggested_locations:
-        st.success(f"Total suggested locations: {len(suggested_locations)}")
+        st.success(f"Insgesamt vorgeschlagene Standorte: {len(suggested_locations)}")
     else:
-        st.warning("No suggested locations were generated.")
+        st.warning("Keine vorgeschlagenen Standorte generiert.")
 
     return pd.DataFrame(suggested_locations)
 
-# Removed clustering as it is not supported in Plotly Mapbox. Using offset to differentiate points.
-
 # Streamlit app layout with sections/tabs
 st.title("Infrascout Dashboard")
-st.subheader("An advanced tool to analyze and improve city infrastructure")
+st.subheader("Ein fortschrittliches Werkzeug zur Analyse und Verbesserung der Stadtinfrastruktur")
 
 # Add custom CSS and JavaScript
 add_custom_css()
@@ -307,22 +305,22 @@ add_custom_js()
 # Adding a loading spinner
 st.markdown("""
 <div class="loading-spinner">
-    <img src="https://example.com/spinner.gif" alt="Loading...">
+    <img src="https://example.com/spinner.gif" alt="Lädt...">
 </div>
 """, unsafe_allow_html=True)
 
 # Creating tabs for different sections
-tab1, tab2, tab3, tab4 = st.tabs(["Set Parameters", "Upload Data", "View Analysis", "Generate Report"])
+tab1, tab2, tab3, tab4 = st.tabs(["Parameter festlegen", "Daten hochladen", "Analyse anzeigen", "Bericht generieren"])
 
 with tab1:
-    st.header("Input Parameters")
+    st.header("Eingabeparameter")
     
     # Define 'place_name' in the session state if it doesn't exist
     if 'place_name' not in st.session_state:
-        st.session_state.place_name = "Bern, Switzerland"
+        st.session_state.place_name = "Bern, Schweiz"
 
     # User input for parameters
-    place_name = st.text_input("City Name", st.session_state.place_name, help="Enter the name of the city you want to analyze.")
+    place_name = st.text_input("Stadtname", st.session_state.place_name, help="Geben Sie den Namen der Stadt ein, die Sie analysieren möchten.")
 
     # Update session state if the city name changes
     if st.session_state.place_name != place_name:
@@ -330,21 +328,21 @@ with tab1:
         # Clear previously fetched data if city changes
         if "infrastructure_gdf" in st.session_state:
             del st.session_state.infrastructure_gdf
-            st.write(f"City changed to {place_name}. Previous infrastructure data cleared.")
+            st.write(f"Stadt geändert zu {place_name}. Vorherige Infrastrukturdaten gelöscht.")
 
-    density_threshold = st.slider("Population Density Threshold", 0, 2000, 1000, help="Set the population density threshold to identify areas that need more infrastructure.")
-    proximity_threshold = st.slider("Proximity Threshold (meters)", 0, 2000, 1000, help="Set the proximity threshold to determine how close existing infrastructure needs to be to consider an area covered.")
+    density_threshold = st.slider("Bevölkerungsdichte-Schwellenwert", 0, 2000, 1000, help="Setzen Sie den Schwellenwert der Bevölkerungsdichte, um Bereiche zu identifizieren, die mehr Infrastruktur benötigen.")
+    proximity_threshold = st.slider("Nähe-Schwellenwert (Meter)", 0, 2000, 1000, help="Setzen Sie den Schwellenwert, um zu bestimmen, wie nah bestehende Infrastrukturen sein müssen, um einen Bereich als abgedeckt zu betrachten.")
 
     # Select infrastructure types
     infra_types = st.multiselect(
-        "Select infrastructure types to analyze:",
+        "Wählen Sie die Infrastrukturtypen zur Analyse:",
         [
             'bench', 'toilets', 'waste_basket', 'bicycle_parking', 'drinking_water', 
             'charging_station', 'bus_stop', 'park', 'public_building', 'crossing', 
             'traffic_signals', 'playground', 'sports_centre', 'viewpoint', 'museum', 'information'
         ],
         default=['bench', 'toilets', 'waste_basket', 'bicycle_parking', 'drinking_water'],
-        help="Select the types of infrastructure you want to analyze."
+        help="Wählen Sie die Infrastrukturen, die Sie analysieren möchten."
     )
 
     # Store user inputs in session state
@@ -355,41 +353,41 @@ with tab1:
     # Sidebar for cost estimation
     st.header("")
     costs = {
-        'bench': st.sidebar.number_input("Cost of a Bench (CHF)", value=200),
-        'toilets': st.sidebar.number_input("Cost of a Toilet (CHF)", value=1000),
-        'waste_basket': st.sidebar.number_input("Cost of a Trash Bin (CHF)", value=150),
-        'bicycle_parking': st.sidebar.number_input("Cost of Bicycle Parking (CHF)", value=500),
-        'drinking_water': st.sidebar.number_input("Cost of a Drinking Water Fountain (CHF)", value=800),
-        'charging_station': st.sidebar.number_input("Cost of a Charging Station (CHF)", value=2000),
-        'bus_stop': st.sidebar.number_input("Cost of a Bus Stop (CHF)", value=5000),
-        'park': st.sidebar.number_input("Cost of a Park (CHF)", value=10000),
-        'public_building': st.sidebar.number_input("Cost of a Public Building (CHF)", value=20000),
-        'crossing': st.sidebar.number_input("Cost of a Crossing (CHF)", value=300),
-        'traffic_signals': st.sidebar.number_input("Cost of Traffic Signals (CHF)", value=1500),
-        'playground': st.sidebar.number_input("Cost of a Playground (CHF)", value=5000),
-        'sports_centre': st.sidebar.number_input("Cost of a Sports Centre (CHF)", value=30000),
-        'viewpoint': st.sidebar.number_input("Cost of a Viewpoint (CHF)", value=1200),
-        'museum': st.sidebar.number_input("Cost of a Museum (CHF)", value=50000),
-        'information': st.sidebar.number_input("Cost of an Information Point (CHF)", value=800)
+        'bench': st.sidebar.number_input("Kosten einer Bank (CHF)", value=200),
+        'toilets': st.sidebar.number_input("Kosten einer Toilette (CHF)", value=1000),
+        'waste_basket': st.sidebar.number_input("Kosten eines Mülleimers (CHF)", value=150),
+        'bicycle_parking': st.sidebar.number_input("Kosten für Fahrradparkplatz (CHF)", value=500),
+        'drinking_water': st.sidebar.number_input("Kosten eines Trinkwasserbrunnens (CHF)", value=800),
+        'charging_station': st.sidebar.number_input("Kosten einer Ladestation (CHF)", value=2000),
+        'bus_stop': st.sidebar.number_input("Kosten einer Bushaltestelle (CHF)", value=5000),
+        'park': st.sidebar.number_input("Kosten eines Parks (CHF)", value=10000),
+        'public_building': st.sidebar.number_input("Kosten eines Öffentlichen Gebäudes (CHF)", value=20000),
+        'crossing': st.sidebar.number_input("Kosten eines Übergangs (CHF)", value=300),
+        'traffic_signals': st.sidebar.number_input("Kosten eines Verkehrssignals (CHF)", value=1500),
+        'playground': st.sidebar.number_input("Kosten eines Spielplatzes (CHF)", value=5000),
+        'sports_centre': st.sidebar.number_input("Kosten eines Sportzentrums (CHF)", value=30000),
+        'viewpoint': st.sidebar.number_input("Kosten eines Aussichtspunktes (CHF)", value=1200),
+        'museum': st.sidebar.number_input("Kosten eines Museums (CHF)", value=50000),
+        'information': st.sidebar.number_input("Kosten einer Informationsstelle (CHF)", value=800)
     }
 
     # Store user inputs in session state
     st.session_state.costs = costs
 
 with tab2:
-    st.header("Data Upload & Fetching")
+    st.header("Daten hochladen & abrufen")
 
     # Option to choose between OSM data or manual upload
     data_source_option = st.radio(
-        "Choose Data Source for Infrastructure Locations:",
-        ("Fetch from OpenStreetMap", "Upload Custom Infrastructure Data"),
-        help="Choose whether to fetch data from OpenStreetMap or upload your custom data."
+        "Datenquelle für Infrastrukturstandorte auswählen:",
+        ("Von OpenStreetMap abrufen", "Eigene Infrastrukturdaten hochladen"),
+        help="Wählen Sie, ob Sie Daten von OpenStreetMap abrufen oder eigene Daten hochladen möchten."
     )
     st.session_state['data_source_option'] = data_source_option  # Store the data source option
 
-    if data_source_option == "Fetch from OpenStreetMap":
+    if data_source_option == "Von OpenStreetMap abrufen":
         # Option to fetch data from OpenStreetMap
-        if st.button("Fetch Data from OpenStreetMap"):
+        if st.button("Daten von OpenStreetMap abrufen"):
             tags = {
                 'amenity': st.session_state.infra_types,
                 'leisure': ['park', 'pitch', 'playground', 'sports_centre'],
@@ -399,25 +397,25 @@ with tab2:
             try:
                 st.session_state.infrastructure_gdf = ox.features_from_place(st.session_state.place_name, tags=tags)
                 st.session_state.fetched_data = True  # Set flag indicating data has been fetched
-                st.success(f"Successfully fetched data from {st.session_state.place_name}!")
+                st.success(f"Daten erfolgreich aus {st.session_state.place_name} abgerufen!")
                 st.write(st.session_state.infrastructure_gdf.head())  # Show a preview of fetched data
             except Exception as e:
-                st.error(f"Error fetching data from OpenStreetMap: {e}")
+                st.error(f"Fehler beim Abrufen der Daten von OpenStreetMap: {e}")
                 st.session_state.fetched_data = False
 
-    elif data_source_option == "Upload Custom Infrastructure Data":
-        st.write("Upload your custom infrastructure CSV or GPKG files for analysis.")
+    elif data_source_option == "Eigene Infrastrukturdaten hochladen":
+        st.write("Laden Sie Ihre eigenen Infrastruktur CSV- oder GPKG-Dateien zur Analyse hoch.")
 
         # Uploading files for various infrastructure types
         uploaded_files = {
-            "Laufstrecken": st.file_uploader("Upload Laufstrecken file", type=["csv", "gpkg"], key="laufstrecken"),
-            "ÖV-Haltestellen": st.file_uploader("Upload ÖV-Haltestellen file", type=["csv", "gpkg"], key="ov_haltestellen"),
-            "Parkanlagen": st.file_uploader("Upload Parkanlagen file", type=["csv", "gpkg"], key="parkanlagen"),
-            "Richtplan Fussverkehr": st.file_uploader("Upload Richtplan Fussverkehr file", type=["csv", "gpkg"], key="richtplan_fussverkehr"),
-            "Spielplaetze": st.file_uploader("Upload Spielplaetze file", type=["csv", "gpkg"], key="spielplaetze"),
-            "Sportanlagen": st.file_uploader("Upload Sportanlagen file", type=["csv", "gpkg"], key="sportanlagen"),
-            "Velopumpenstandorte": st.file_uploader("Upload Velopumpenstandorte file", type=["csv", "gpkg"], key="velopumpenstandorte"),
-            "Verkehrsmessstellen": st.file_uploader("Upload Verkehrsmessstellen file", type=["csv", "gpkg"], key="verkehrsmessstellen")
+            "Laufstrecken": st.file_uploader("Laufstrecken-Datei hochladen", type=["csv", "gpkg"], key="laufstrecken"),
+            "ÖV-Haltestellen": st.file_uploader("ÖV-Haltestellen-Datei hochladen", type=["csv", "gpkg"], key="ov_haltestellen"),
+            "Parkanlagen": st.file_uploader("Parkanlagen-Datei hochladen", type=["csv", "gpkg"], key="parkanlagen"),
+            "Richtplan Fussverkehr": st.file_uploader("Richtplan Fussverkehr-Datei hochladen", type=["csv", "gpkg"], key="richtplan_fussverkehr"),
+            "Spielplaetze": st.file_uploader("Spielplätze-Datei hochladen", type=["csv", "gpkg"], key="spielplaetze"),
+            "Sportanlagen": st.file_uploader("Sportanlagen-Datei hochladen", type=["csv", "gpkg"], key="sportanlagen"),
+            "Velopumpenstandorte": st.file_uploader("Velopumpenstandorte-Datei hochladen", type=["csv", "gpkg"], key="velopumpenstandorte"),
+            "Verkehrsmessstellen": st.file_uploader("Verkehrsmessstellen-Datei hochladen", type=["csv", "gpkg"], key="verkehrsmessstellen")
         }
 
         # Convert each uploaded file to GeoDataFrame and store in session state
@@ -430,53 +428,53 @@ with tab2:
                         if "Longitude" in df.columns and "Latitude" in df.columns:
                             gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df.Longitude, df.Latitude), crs="EPSG:4326")
                         else:
-                            st.error(f"{key} CSV file is missing 'Longitude' or 'Latitude' columns.")
+                            st.error(f"{key} CSV-Datei fehlt 'Longitude'- oder 'Latitude'-Spalten.")
                             continue
                     elif file.name.endswith(".gpkg"):
                         gdf = gpd.read_file(file)
                         if gdf.empty:
-                            st.error(f"{key} GPKG file is empty.")
+                            st.error(f"{key} GPKG-Datei ist leer.")
                             continue
 
                     # Convert to appropriate projection
                     gdf = gdf.to_crs(epsg=32632)
                     st.session_state[f"{key}_gdf"] = gdf
-                    st.write(f"<span class='uploaded-file-name'>{key} data loaded successfully.</span>", unsafe_allow_html=True)
+                    st.write(f"<span class='uploaded-file-name'>{key} Daten erfolgreich geladen.</span>", unsafe_allow_html=True)
                     st.write(gdf.head())
                     manual_data_loaded = True
 
                 except Exception as e:
-                    st.error(f"Error loading {key} data: {e}")
+                    st.error(f"Fehler beim Laden der {key} Daten: {e}")
 
         # Set flag if manual data has been successfully loaded
         st.session_state.manual_data_loaded = manual_data_loaded
 
     # Placeholder for file uploads for other data
-    population_file = st.file_uploader("Choose a CSV file for population density data", type="csv", help="Upload a CSV file containing population density data.")
-    busyness_file = st.file_uploader("Choose a CSV file for busyness data", type="csv", help="Upload a CSV file containing busyness data.")
-    air_quality_file = st.file_uploader("Choose a CSV file for air quality data", type="csv", help="Upload a CSV file containing air quality data.")
+    population_file = st.file_uploader("CSV-Datei für Bevölkerungsdichte-Daten auswählen", type="csv", help="Laden Sie eine CSV-Datei mit Bevölkerungsdichte-Daten hoch.")
+    busyness_file = st.file_uploader("CSV-Datei für Verkehrsdaten auswählen", type="csv", help="Laden Sie eine CSV-Datei mit Verkehrsdaten hoch.")
+    air_quality_file = st.file_uploader("CSV-Datei für Luftqualitätsdaten auswählen", type="csv", help="Laden Sie eine CSV-Datei mit Luftqualitätsdaten hoch.")
 
     # Store uploaded files in session state
     if population_file:
         st.session_state.population_df = pd.read_csv(population_file)
-        st.write("Population data loaded successfully.")
+        st.write("Bevölkerungsdaten erfolgreich geladen.")
         st.write(st.session_state.population_df.head())
 
     if busyness_file:
         st.session_state.busyness_df = pd.read_csv(busyness_file)
-        st.write("Busyness data loaded successfully.")
+        st.write("Verkehrsdaten erfolgreich geladen.")
         st.write(st.session_state.busyness_df.head())
 
     if air_quality_file:
         st.session_state.air_quality_df = pd.read_csv(air_quality_file)
-        st.write("Air quality data loaded successfully.")
+        st.write("Luftqualitätsdaten erfolgreich geladen.")
         st.write(st.session_state.air_quality_df.head())
 
 with tab3:
-    st.header("Analysis & Results")
+    st.header("Analyse & Ergebnisse")
 
     # Run analysis button
-    if st.button("Run Analysis"):
+    if st.button("Analyse starten"):
         # Use data stored in session state
         population_df = st.session_state.get('population_df', pd.DataFrame())
         busyness_df = st.session_state.get('busyness_df', pd.DataFrame())
@@ -485,9 +483,9 @@ with tab3:
         # Determine if we are using OpenStreetMap or manual data
         data_source_option = st.session_state.get('data_source_option', None)
 
-        if data_source_option == "Fetch from OpenStreetMap":
+        if data_source_option == "Von OpenStreetMap abrufen":
             if 'infrastructure_gdf' not in st.session_state:
-                st.error("Please fetch infrastructure data from OpenStreetMap before running the analysis.")
+                st.error("Bitte rufen Sie die Infrastrukturdaten von OpenStreetMap ab, bevor Sie die Analyse durchführen.")
             else:
                 infrastructure_gdf = st.session_state.infrastructure_gdf
                 tags = {
@@ -496,7 +494,7 @@ with tab3:
                     'tourism': ['information', 'viewpoint', 'museum'],
                     'highway': ['crossing', 'bus_stop', 'traffic_signals']
                 }
-        elif data_source_option == "Upload Custom Infrastructure Data":
+        elif data_source_option == "Eigene Infrastrukturdaten hochladen":
             infrastructure_gdfs = []
             for key in [
                 "Laufstrecken", "ÖV-Haltestellen", "Parkanlagen",
@@ -508,20 +506,20 @@ with tab3:
                     infrastructure_gdfs.append(gdf)
 
             if not infrastructure_gdfs:
-                st.error("Please upload at least one infrastructure file before running the analysis.")
+                st.error("Bitte laden Sie mindestens eine Infrastrukturdatei hoch, bevor Sie die Analyse durchführen.")
             else:
                 # Concatenate all manually uploaded infrastructure data into a single GeoDataFrame
                 try:
                     infrastructure_gdf = pd.concat(infrastructure_gdfs).pipe(gpd.GeoDataFrame)
                     infrastructure_gdf = infrastructure_gdf.to_crs(epsg=32632)  # Ensure all data is in the same CRS
                 except Exception as e:
-                    st.error(f"Error combining uploaded infrastructure data: {e}")
+                    st.error(f"Fehler beim Kombinieren der hochgeladenen Infrastrukturdaten: {e}")
                 else:
                     tags = {
                         'amenity': st.session_state.infra_types
                     }
         else:
-            st.error("Please select a data source option (OpenStreetMap or manual upload).")
+            st.error("Bitte wählen Sie eine Datenquelle aus (OpenStreetMap oder manuelles Hochladen).")
         
         # If infrastructure_gdf is defined, proceed with the analysis
         if 'infrastructure_gdf' in locals():
@@ -538,42 +536,42 @@ with tab3:
                     infrastructure_gdf
                 )
             except Exception as e:
-                st.error(f"Error during analysis: {e}")
+                st.error(f"Fehler bei der Analyse: {e}")
             else:
                 # Save the results in session state
                 if results_df is not None and not results_df.empty:
                     st.session_state.results_df = results_df
-                    st.success("Analysis completed successfully!")
+                    st.success("Analyse erfolgreich abgeschlossen!")
 
-                    # Display results
-                    st.write("Suggested Infrastructure Locations:")
+                    # Display results as table
+                    st.write("Vorgeschlagene Infrastrukturlocations:")
                     st.dataframe(results_df)
 
                     # Calculate total cost
                     if 'costs' in st.session_state:
                         total_cost = sum(
-                            len(results_df[results_df['Infrastructure Type'] == infra_type.capitalize()]) * cost
+                            len(results_df[results_df['Infrastrukturtyp'] == infra_type.capitalize()]) * cost
                             for infra_type, cost in st.session_state.costs.items()
                         )
-                        st.write(f"Total Estimated Cost: CHF {total_cost}")
+                        st.write(f"Gesamtkosten (geschätzt): CHF {total_cost}")
 
                     # Plot the map with consistent size
                     fig = px.scatter_mapbox(
                         results_df,
-                        lat="Suggested Latitude",
-                        lon="Suggested Longitude",
-                        hover_name="Infrastructure Type",
-                        hover_data=["Area", "Population Density"],
+                        lat="Vorgeschlagene Breite",
+                        lon="Vorgeschlagene Länge",
+                        hover_name="Infrastrukturtyp",
+                        hover_data=["Bereich", "Bevölkerungsdichte"],
                         zoom=12,
                         height=600,
-                        color="Infrastructure Type"
+                        color="Infrastrukturtyp"
                     )
                     fig.update_layout(
                         mapbox_style="open-street-map",
                         margin={"r":0,"t":0,"l":0,"b":0},
                         annotations=[
                             dict(
-                                text="<b>Coordinates</b>",
+                                text="<b>Koordinaten</b>",
                                 showarrow=False,
                                 xref="paper",
                                 yref="paper",
@@ -586,26 +584,26 @@ with tab3:
                     fig.update_traces(marker=dict(size=12))  # Make markers larger for better visibility
                     st.plotly_chart(fig)
                 else:
-                    st.write("No locations available to display on the map.")
+                    st.write("Keine Standorte zur Anzeige auf der Karte verfügbar.")
 
 with tab4:
-    st.header("Report & Feedback")
+    st.header("Bericht & Feedback")
 
     # User feedback section
-    st.markdown("<p class='feedback-label'>Provide feedback on the suggested locations:</p>", unsafe_allow_html=True)
-    user_feedback = st.text_area("Provide feedback on the suggested locations:")
+    st.markdown("<p class='feedback-label'>Geben Sie Feedback zu den vorgeschlagenen Standorten:</p>", unsafe_allow_html=True)
+    user_feedback = st.text_area("Geben Sie Feedback zu den vorgeschlagenen Standorten:")
 
-    if st.button("Download PDF Report"):
+    if st.button("PDF-Bericht herunterladen"):
         if 'results_df' in st.session_state and not st.session_state.results_df.empty:
             generate_report(st.session_state.results_df, user_feedback)
             # Add branding elements to the report
             html_content = "<div style='text-align:center;'><img src='https://example.com/logo.png' alt='Logo' width='100'></div>"
             with open('C:/Users/moham/Desktop/Infrascout/report.pdf', "rb") as pdf_file:
                 st.download_button(
-                    label="Download Report as PDF",
+                    label="Bericht als PDF herunterladen",
                     data=pdf_file,
-                    file_name='infrastructure_report.pdf',
+                    file_name='infrastrukturbericht.pdf',
                     mime='application/pdf'
                 )
         else:
-            st.error("Please run the analysis before downloading the PDF report.")
+            st.error("Bitte führen Sie die Analyse durch, bevor Sie den PDF-Bericht herunterladen.")
