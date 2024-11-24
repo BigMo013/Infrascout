@@ -19,7 +19,9 @@ def add_custom_css():
     custom_css = """
     <style>
         .stApp {
-            background-color: #001f3f; 
+            background-image: url('https://example.com/background.jpg');
+            background-size: cover;
+            background-attachment: fixed;
             color: #000000;
         }
         .main-content {
@@ -58,7 +60,7 @@ def add_custom_css():
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .stSidebar {
-            background-color:  #001f3f;
+            background-color:  #000000;
             border-right: 2px solid #e0e0e0;
             padding: 20px;
         }
