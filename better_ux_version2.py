@@ -55,12 +55,12 @@ def add_custom_css():
             border: 1px solid #cccccc;
             padding: 10px;
             font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba5, 255, 255, 0.95);
             color: #000000;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .stSidebar {
-            background-color: rgba(245, 245, 245, 0.95);
+            background-color:  #001f3f;
             border-right: 2px solid #e0e0e0;
             padding: 20px;
         }
