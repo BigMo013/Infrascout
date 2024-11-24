@@ -15,6 +15,7 @@ except Exception as e:
     st.error(f"Fehler bei der Konfiguration von pdfkit: {e}")
 
 # Custom CSS for styling Streamlit dashboard
+# Custom CSS for styling Streamlit dashboard
 def add_custom_css():
     custom_css = """
     <style>
@@ -87,7 +88,7 @@ def add_custom_css():
             color: #000000;
         }
         .stSlider > label {
-            color: #000000;
+            color: #ffffff; /* Changed to white */
         }
         .stMultiselect > label {
             color: #000000;
