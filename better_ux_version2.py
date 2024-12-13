@@ -14,24 +14,20 @@ try:
 except Exception as e:
     st.error(f"Fehler bei der Konfiguration von pdfkit: {e}")
 
-
-# Custom CSS for styling Streamlit dashboard
 # Custom CSS for styling Streamlit dashboard
 def add_custom_css():
     custom_css = """
     <style>
         .stApp {
-            background-image: url('https://example.com/background.jpg');
-            background-size: cover;
-            background-attachment: fixed;
-            color: #000000;
+            background-color: #000013;
+            color: #ffffff;
         }
         .main-content {
             padding: 2rem;
             border-radius: 8px;
         }
         .stButton > button {
-            background-color: #4A90E2;
+            background-color: #FF4B4B;
             color: #ffffff;
             border-radius: 12px;
             padding: 12px;
@@ -40,16 +36,16 @@ def add_custom_css():
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .stButton > button:hover {
-            background-color: #357ABD;
+            background-color: #000000;
             transform: scale(1.05);
         }
         .stTabs [role="tab"] {
-            background-color: rgba(255, 255, 255, 0.95);
+            background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 12px;
             font-weight: bold;
-            color: #000000;
+            color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .stTextInput > div > input {
@@ -57,25 +53,31 @@ def add_custom_css():
             border: 1px solid #cccccc;
             padding: 10px;
             font-weight: bold;
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #000000;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+        .stTextInput > label {
+            color: #ffffff;
+        }
+        .stSlider > label {
+            color: #ffffff;
+        }
+        .stMultiselect > label {
+            color: #ffffff;
+        }
         .stSidebar {
-            background-color: #000000;
+            background-color: #000013;
             border-right: 2px solid #e0e0e0;
             padding: 20px;
+            color: #ffffff;
         }
         .coordinate-label {
             font-size: 18px;
             font-weight: bold;
-            color: #000000;
-        }
-        .stMarkdown h1 {
             color: #ffffff;
-            font-size: 3em;
         }
-        .stMarkdown h2 {
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
             color: #ffffff;
         }
         .stMarkdown p {
@@ -86,21 +88,21 @@ def add_custom_css():
             font-weight: bold;
         }
         .stRadio > label, .stRadio > div > label {
-            color: #ffffff; /* Changed to white */
+            color: #ffffff;
         }
         .stSlider > label {
-            color: #ffffff; /* Changed to white */
+            color: #ffffff;
         }
         .stMultiselect > label {
-            color: #000000;
+            color: #ffffff;
         }
         .feedback-label {
             font-weight: bold;
             font-size: 1.2em;
-            color: #ffffff; /* Changed to white */
+            color: #ffffff;
         }
         .stTextArea > label {
-            color: #ffffff; /* Changed text area label to white */
+            color: #ffffff;
         }
         .loading-spinner {
             display: none;
@@ -145,16 +147,16 @@ def add_custom_js():
             progressSteps.innerHTML = `
                 <div style="display: flex; justify-content: center; margin-bottom: 20px;">
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">1. Parameter festlegen</span>
+                        <span style="font-size: 1.2em; color: #ffffff;">1. Parameter festlegen</span>
                     </div>
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">2. Daten hochladen</span>
+                        <span style="font-size: 1.2em; color: #ffffff;">2. Daten hochladen</span>
                     </div>
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">3. Analyse anzeigen</span>
+                        <span style="font-size: 1.2em; color: #ffffff;">3. Analyse anzeigen</span>
                     </div>
                     <div style="flex: 1; text-align: center; padding: 10px;">
-                        <span style="font-size: 1.2em;">4. Bericht generieren</span>
+                        <span style="font-size: 1.2em; color: #ffffff;">4. Bericht generieren</span>
                     </div>
                 </div>
             `;
@@ -221,6 +223,7 @@ def generate_report(data, feedback):
         st.success(f"PDF-Bericht erfolgreich generiert unter {output_pdf_path}!")
     except Exception as e:
         st.error(f"Fehler beim Generieren des PDF: {e}. Bitte stellen Sie sicher, dass lokale Dateizugriffe für wkhtmltopdf aktiviert sind.")
+
 
 # Analysis function for infrastructure
 def analyze_infrastructure_with_apis(
